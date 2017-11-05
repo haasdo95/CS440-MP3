@@ -5,6 +5,7 @@ from math import log
 prob = pickle.load(open("train_result.pkl", "rb"))
 print(prob)
 
+
 def prob_of_image_being(image, manuscript_num: int):
     """
     the probability of image being manuscript_num
@@ -19,6 +20,26 @@ def prob_of_image_being(image, manuscript_num: int):
             total_prob += log(p)
     return total_prob
 
+
+def get_prototypical(data):
+    """
+    :param data: iterable of (image, truth) tuples
+    :return:
+    """
+    prototypical_minimax = [{
+        "max": float("-inf"), "min": float("inf"),
+        "max_chosen": None, "min_chosen": None
+    } for _ in range(10)]
+    for img, label in data:
+        probability = prob_of_image_being(img, label)
+        entry = prototypical_minimax[label]
+        if probability < entry['min']:
+            entry['min'] = probability
+            entry['min_chosen'] = img
+        if probability > entry['max']:
+            entry['max'] = probability
+            entry['max_chosen'] = img
+    return prototypical_minimax
 
 def guess(image):
     """
@@ -57,6 +78,8 @@ def main():
     for row in confusion_matrix:
         print(row)
     print("RATE OF CORRECTNESS: ", right_count / len(test_data))
+    proto = get_prototypical(test_data)
+    print(proto)
 
 
 if __name__ == '__main__':

@@ -4,6 +4,8 @@
 import pickle
 from part1.deserializer import read_labeled_data_files
 
+IS_BINARY = False
+
 def group_by_label(training_tuples):
     """
     :param training_tuples: iterable of (image, label) tuples
@@ -31,7 +33,7 @@ def count_occurrence(grouped: tuple):
     return groups
 
 
-def freq2prob(groups: tuple, smoother: int):
+def freq2prob(groups: tuple, smoother: int, is_binary=IS_BINARY):
     """
     :param groups: tuple returned by count_occurrence
     :param smoother: related to Laplace Smoothing
@@ -40,9 +42,38 @@ def freq2prob(groups: tuple, smoother: int):
     for matrix_of_dict in groups:
         for row in matrix_of_dict:
             for d in row:
-                denominator = sum(d.values()) + 3 * smoother
-                for k in d:
-                    d[k] = (d[k] + smoother) / denominator
+                if not is_binary:
+                    denominator = sum(d.values()) + 3 * smoother
+                    for k in d:
+                        d[k] = (d[k] + smoother) / denominator
+                else:
+                    denominator = d[' '] + d['#'] + 2 * smoother
+                    for k in d:
+                        d[k] = (d[k] + smoother) / denominator
+
+
+def ternary2binary(groups: tuple):
+    """
+    basically this adds up black & gray and does the reassignment
+    CAVEAT: do this before smoothing
+    :param groups: tuple returned by count_occurrence
+    :return: this function ALTERS the "groups" passed in!
+    """
+    for matrix_of_dict in groups:
+        for row in matrix_of_dict:
+            for d in row:
+                blackNgray = d['#'] + d['+']
+                d['#'] = blackNgray
+                d['+'] = blackNgray
+
+
+def retrieve_prob(is_binary=IS_BINARY, smoother=1):
+    grouped = group_by_label(read_labeled_data_files())
+    occ = count_occurrence(grouped)
+    if is_binary:
+        ternary2binary(occ)
+    freq2prob(occ, smoother)
+    return occ
 
 
 def main():
@@ -54,7 +85,9 @@ def main():
     assert len(occ) == 10
     assert len(occ[0]) == 28
     assert len(occ[0][0]) == 28
-    assert len(occ[0][0][0].keys()) == 3 # example usage
+    assert len(occ[0][0][0].keys()) == 3
+    if IS_BINARY:
+        ternary2binary(occ)
     freq2prob(occ, 1)
     print(occ)
     pickle.dump(occ, open("train_result.pkl", "wb"))
