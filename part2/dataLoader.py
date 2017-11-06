@@ -25,7 +25,9 @@ def getData(file):
         ret.append(data[i * 28:(i + 1) * 28])
 
 
-    return list(map(lambda x: np.mat(x[:25],dtype=float),ret))
+    ret = list(map(lambda x: np.mat(x[:25],dtype=float),ret))
+    ret.append(np.ones((25,10)))
+    return ret
 
 
 yes_data = getData(yes_train)
