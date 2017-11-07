@@ -7,6 +7,7 @@ import math
 if __name__ == '__main__':
     yes_train = getData('./audioData/yes_train.txt')
     no_train = getData('./audioData/no_train.txt')
+    print('TOTAL TRAIN SIZE:',len(yes_train)+len(no_train))
     no_test = getData('./audioData/no_test.txt',smooth=False)
     yes_test = getData('./audioData/yes_test.txt',smooth=False)
     cond_prob = getCond_prob({'yes': yes_train, 'no': no_train})
