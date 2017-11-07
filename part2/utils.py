@@ -48,8 +48,8 @@ def getPostProb(cond_prob: dict, data: list):
     possibilities = []
     for kls, cond in cond_prob.items():
         possibility = 0
-        for i in range(25):
-            for j in range(10):
+        for i in range(30):
+            for j in range(13):
                 if data[i, j] == 1.0:
                     try:
                         possibility += math.log2(cond[i, j])
@@ -80,9 +80,14 @@ def getAccuracy(cond_prob, test):
     """
     confuseMatrix = {k1: {k2: 0 for k2 in cond_prob} for k1 in cond_prob}
     for i in test:
+        # i[0] is data; i[1] is label
         possibilities = getPostProb(cond_prob, i[0])
         # add one to the confusion dict
-        confuseMatrix[i[1]][sorted(possibilities)[-1][1]] += 1
+        print(possibilities)
+        my_guess = sorted(possibilities)[-1][1]
+        print("MY GUESS: ", my_guess)
+        print("TRUTH: ", i[1])
+        confuseMatrix[i[1]][my_guess] += 1
     size = len(test)
     print(size)
     for k1 in confuseMatrix:
