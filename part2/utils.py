@@ -74,19 +74,19 @@ def getAccuracy(cond_prob, test, height, width):
     get the confusionMatrix
         :param cond_prob: the conditional possibility dict
         :param test: test data and their tags, in this form: [(matrix, tag)]
+        :param height: height of input matrix
+        :param width: width of input matrix
     """
     confuseMatrix = {k1: {k2: 0 for k2 in cond_prob} for k1 in cond_prob}
     for i in test:
         # i[0] is data; i[1] is label
         possibilities = getPostProb(cond_prob, i[0], height, width)
         # add one to the confusion dict
-        print(possibilities)
         my_guess = sorted(possibilities)[-1][1]
         # print("MY GUESS: ", my_guess)
         # print("TRUTH: ", i[1])
         confuseMatrix[i[1]][my_guess] += 1
     size = len(test)
-    print(size)
     for k1 in confuseMatrix:
         for k2 in confuseMatrix[k1]:
             confuseMatrix[k1][k2] /= size

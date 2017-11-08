@@ -61,14 +61,32 @@ def output(datas, fileName):
                 f.write('\n')
             f.write('\n\n\n')
 
+def formalData(datas):
+    """return the formal data"""
+    d = {}
+    for i,ty in datas:
+        if ty not in d:
+            d[ty] = [np.zeros(i.shape),np.ones(i.shape)]
+        d[ty].append(i)
+    return d
 
-datas = []
-for fileEntry in files:
-    result = split(fileEntry.path, 10, 10, 4, 2)
-    if result:
-        print(result)
-        datas += result
-output(datas, 'output.txt')
+def run():
+    datas = []
+    for fileEntry in files:
+        result = split(fileEntry.path, 10, 10, 4, 2)
+        if result:
+            datas += result
+    return getCond_prob(formalData(datas))
+
+if __name__ == "__main__":
+    datas = []
+    for fileEntry in files:
+        result = split(fileEntry.path, 10, 10, 4, 2)
+        if result:
+            print(result)
+            datas += result
+    output(datas, 'output.txt')
+    print(getCond_prob(formalData(datas)))
 
 # usefulData = split(file1, 10, 10, 3, 1)
 # for i in usefulData:
