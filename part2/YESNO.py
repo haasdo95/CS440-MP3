@@ -12,7 +12,7 @@ if __name__ == '__main__':
     yes_test = getData('./audioData/yes_test.txt',smooth=False)
     cond_prob = getCond_prob({'yes': yes_train, 'no': no_train})
     testData = [(i,'yes') for i in yes_test]+[(i,'no') for i in no_test]
-    confuseMat = getAccuracy(cond_prob,testData)
+    confuseMat = getAccuracy(cond_prob,testData,25,10)
     accuracy = 0
     for i in confuseMat:
         accuracy+=confuseMat[i][i]
