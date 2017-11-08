@@ -73,7 +73,7 @@ def formalData(datas):
 def run():
     datas = []
     for fileEntry in files:
-        result = split(fileEntry.path, 10, 10, 4, 2)
+        result = split(fileEntry.path, 20, 20, 4, 2)
         if result:
             datas += result
     return getCond_prob(formalData(datas))
@@ -81,7 +81,7 @@ def run():
 if __name__ == "__main__":
     datas = []
     for fileEntry in files:
-        result = split(fileEntry.path, 10, 10, 4, 2)
+        result = split(fileEntry.path, 20, 20, 4, 2)
         if result:
             print(result)
             datas += result
