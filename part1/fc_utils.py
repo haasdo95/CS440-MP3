@@ -1,6 +1,6 @@
 from part1.deserializer import read_labeled_data_files
 
-def featurize(img: list, height: int, width: int, is_disjoint: bool):
+def featurize(img: list, height: int, width: int, is_disjoint: bool, dimension=(28, 28)):
     """
     :param img: an 28 * 28 img
     :param height: height of the window
@@ -8,16 +8,17 @@ def featurize(img: list, height: int, width: int, is_disjoint: bool):
     :param is_disjoint: true if the windows don't overlap
     :return: an iterator of features
     """
+    row, column = dimension
     row_stride = 1
     col_stride = 1
     if is_disjoint:
         row_stride = height
         col_stride = width
-    row_bound = 28 - height + 1
-    col_bound = 28 - width + 1
+    row_bound = row - height + 1
+    col_bound = column - width + 1
     if is_disjoint:
-        row_bound = 28 - (28 % height)
-        col_bound = 28 - (28 % width)
+        row_bound = row - (row % height)
+        col_bound = column - (column % width)
 
     for row_start in range(0, row_bound, row_stride):
         for col_start in range(0, col_bound, col_stride):

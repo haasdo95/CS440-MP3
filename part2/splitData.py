@@ -4,6 +4,13 @@ import os
 path = './txt_yesno/training'
 files = os.scandir(path)
 
+def split_all():
+    datas = []
+    for fileEntry in files:
+        result = split(fileEntry.path, 20, 20, 4, 2)
+        if result:
+            datas += result
+    return datas
 
 def split(filePath, preLen, postLen, startThreshold, endThreshold):
     '''
@@ -79,14 +86,16 @@ def run():
     return getCond_prob(formalData(datas))
 
 if __name__ == "__main__":
-    datas = []
-    for fileEntry in files:
-        result = split(fileEntry.path, 20, 20, 4, 2)
-        if result:
-            print(result)
-            datas += result
-    output(datas, 'output.txt')
-    print(getCond_prob(formalData(datas)))
+    # datas = []
+    # for fileEntry in files:
+    #     result = split(fileEntry.path, 20, 20, 4, 2)
+    #     if result:
+    #         # print(result)
+    #         datas += result
+    # output(datas, 'output.txt')
+    # print(getCond_prob(formalData(datas)))
+
+    print(split_all())
 
 # usefulData = split(file1, 10, 10, 3, 1)
 # for i in usefulData:

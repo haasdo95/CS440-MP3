@@ -1,5 +1,6 @@
 from part1.fc_utils import featurize
-from part1.deserializer import read_labeled_data_files
+from part1.deserializer import read_labeled_data_files # for four credit
+# from part1.deserializer_face import read_labeled_data_files # for ec
 import pickle
 
 def get_num_features(kernel_size, is_disjoint):
@@ -47,6 +48,7 @@ if __name__ == '__main__':
     for kernel_size in sizes_to_run_disj:
         print("WORKING ON DISJ: ", kernel_size)
         occ = count_occurrence(kernel_size, is_disjoint=True)
+        print(occ)
         freq2prob(occ, smoother=1)
         pickle.dump(occ, open('train_results/result_disj' + str(kernel_size[0]) + str(kernel_size[1]) + '.pkl', 'wb'))
     for kernel_size in sizes_to_run_overlap:
