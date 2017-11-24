@@ -18,3 +18,7 @@ if __name__ == '__main__':
         accuracy+=confuseMat[i][i]
     print(confuseMat)
     print("TOTAL ACCURACY:",accuracy)
+    for _, v in confuseMat.items():
+        for k in v:
+            v[k] *= 5
+    print(confuseMat)

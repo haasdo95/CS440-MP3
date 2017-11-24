@@ -3,7 +3,7 @@ import numpy as np
 import math
 
 
-def getData(fileName: str, height=25, width=10, interval=3, smooth=True):
+def getData(fileName: str, height=25, width=10, interval=3, smooth=True, smoother=1):
     """
     get data from files
         :param fileName: path to file
@@ -35,8 +35,9 @@ def getData(fileName: str, height=25, width=10, interval=3, smooth=True):
 
     ret = list(map(lambda x: np.mat(x[:height], dtype=float), ret))
     if smooth:
-        ret.append(np.ones((height, width)))
-        ret.append(np.zeros((height, width)))
+        for _ in range(smoother):
+            ret.append(np.ones((height, width)))
+            ret.append(np.zeros((height, width)))
     return ret
 
 

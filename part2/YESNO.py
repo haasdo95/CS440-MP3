@@ -5,8 +5,8 @@ import math
 
 
 if __name__ == '__main__':
-    yes_train = getData('./audioData/yes_train.txt')
-    no_train = getData('./audioData/no_train.txt')
+    yes_train = getData('./audioData/yes_train.txt', smoother=1)
+    no_train = getData('./audioData/no_train.txt', smoother=1)
     print('TOTAL TRAIN SIZE:',len(yes_train)+len(no_train))
     no_test = getData('./audioData/no_test.txt',smooth=False)
     yes_test = getData('./audioData/yes_test.txt',smooth=False)
@@ -17,3 +17,4 @@ if __name__ == '__main__':
     for i in confuseMat:
         accuracy+=confuseMat[i][i]
     print("TOTAL ACCURACY:",accuracy)
+    print(confuseMat)
