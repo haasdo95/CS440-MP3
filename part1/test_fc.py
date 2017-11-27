@@ -27,6 +27,24 @@ def guess(img, kernel_size, prob_lookup_table, is_disjoint):
     max_index = all_probs.index(max(all_probs))
     return max_index
 
+def measure_performance_CV(cv_data, kernel_size, is_disjoint, smoother, epoch_num, num_folds):
+    height, width = kernel_size
+    post_fix = "_disjFC" if is_disjoint else "_overlapFC"
+    path = 'train_results/result' + post_fix + str(smoother) + "(" + str(epoch_num) + "," + str(num_folds) + ")" + str(height) + str(width) + '.pkl'
+    prob_lookup_table = pickle.load(open(path, 'rb'))
+
+    # bookkeeping comes here!
+    cv_data = list(cv_data)
+    total_count = len(cv_data)
+    overall_correctness = 0
+    record = []  # store tuples of (truth, my)
+
+    for img, truth in cv_data:
+        my_guess = guess(img, kernel_size, prob_lookup_table, is_disjoint)
+        record.append((truth, my_guess))
+        if my_guess == truth:
+            overall_correctness += 1
+    return (overall_correctness / total_count), analyze(record, kernel_size, is_disjoint)
 
 def measure_performance(test_data, kernel_size, is_disjoint):
     height, width = kernel_size
@@ -76,7 +94,9 @@ def print_confusion_matrix(conf_mat):
 
 if __name__ == '__main__':
     sizes_to_run_disj = [(1, 1), (2, 2), (2, 4), (4, 2), (4, 4)]
+    # sizes_to_run_disj = [(1, 1), (2, 2)]
     sizes_to_run_overlap = [(2, 2), (2, 4), (4, 2), (4, 4), (2, 3), (3, 2), (3, 3)]
+    # sizes_to_run_overlap = [(2, 2)]
     for kernel_size in sizes_to_run_disj:
         test_data = read_labeled_data_files(is_training=False, is_binary=True)
         perf, conf_matrix = measure_performance(test_data, kernel_size, True)

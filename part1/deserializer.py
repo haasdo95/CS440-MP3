@@ -2,6 +2,10 @@
 this file contains utilities to read in image files and ground truth files
 """
 
+import random
+random.seed(666)
+
+
 TRAINING_PATH = "./digitdata/trainingimages"
 TEST_PATH = "./digitdata/testimages"
 
@@ -39,7 +43,7 @@ def read_image_files(is_training=True, is_binary=True):
                 accum = [] # reset accumulator
 
 
-def read_labeled_data_files(is_training=True, is_binary=True):
+def read_labeled_data_files_private(is_training=True, is_binary=True):
     """
     :param is_training: True if we are reading training data
     :return: yields tuples of image data and label data
@@ -50,16 +54,36 @@ def read_labeled_data_files(is_training=True, is_binary=True):
             label = int(label_line[0])
             yield image, label
 
+once = False
+def read_labeled_data_files(is_training=True, is_binary=True):
+    labeled_data = list(read_labeled_data_files_private(is_training, is_binary))
+    global once
+    if not once:
+        once = True
+        random.shuffle(labeled_data)
+    return labeled_data
+
+def train_cv_split(labeled_data: list, fold_idx, num_folds):
+    assert len(labeled_data) % num_folds == 0
+    fold_size = len(labeled_data) // num_folds
+    fold_start = fold_idx * fold_size
+    prev = labeled_data[0: fold_start]
+    next = labeled_data[fold_start+fold_size:]
+    train_set = prev + next
+    return train_set, labeled_data[fold_start: fold_start + fold_size]
 
 def main():
     get_prior()
-    data = list(read_labeled_data_files(False))
+    data = list(read_labeled_data_files(True))
     print(len(data))
     img, label = data[-1]
     print(len(img))
     print(len(img[-1]))
     print(img[0])
     print(label)
+    train, cv = train_cv_split(data, 3, 10)
+    print(len(train))
+    print(len(cv))
 
 
 if __name__ == '__main__':
