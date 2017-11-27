@@ -72,13 +72,13 @@ def plot_heat_map(i, j, i_mat, j_mat, i_j_mat, fname, cmap=plt.cm.jet):
     """
     df_i_mat = pd.DataFrame(np.log(i_mat))
     df_j_mat = pd.DataFrame(np.log(j_mat))
-    df_i_j_mat = pd.DataFrame(np.log(i_j_mat)/4)
+    df_i_j_mat = pd.DataFrame(np.log(i_j_mat))
     fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(9, 3))
-    ax1 = sns.heatmap(df_i_mat, annot=False, xticklabels=False, yticklabels=False, cmap=cmap, ax=ax1)
+    ax1 = sns.heatmap(df_i_mat, annot=False, xticklabels=False, yticklabels=False, cmap=cmap, ax=ax1, robust=True)
     ax1.set_title("Likelihood Map of Digit " + str(i))
-    ax2 = sns.heatmap(df_j_mat, annot=False, xticklabels=False, yticklabels=False, cmap=cmap, ax=ax2)
+    ax2 = sns.heatmap(df_j_mat, annot=False, xticklabels=False, yticklabels=False, cmap=cmap, ax=ax2, robust=True)
     ax2.set_title("Likelihood Map of Digit " + str(j))
-    ax3 = sns.heatmap(df_i_j_mat, annot=False, xticklabels=False, yticklabels=False, cmap=cmap, ax=ax3)
+    ax3 = sns.heatmap(df_i_j_mat, annot=False, xticklabels=False, yticklabels=False, cmap=cmap, ax=ax3, robust=True)
     ax3.set_title("Log Odds Ratio of Pair (" + str(i) + "," + str(j) + ")")
     fig.savefig(fname)
 

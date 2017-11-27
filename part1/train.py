@@ -67,7 +67,7 @@ def ternary2binary(groups: tuple):
                 d['+'] = blackNgray
 
 
-def retrieve_prob(is_binary=IS_BINARY, smoother=1):
+def retrieve_prob(is_binary=IS_BINARY, smoother=0.5):
     grouped = group_by_label(read_labeled_data_files())
     occ = count_occurrence(grouped)
     if is_binary:

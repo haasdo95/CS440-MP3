@@ -108,7 +108,7 @@ if __name__ == '__main__':
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             title = 'Confusion Matrix with Disjoint Kernel Size = ' + str(kernel_size)
-            file_name = str(parent_dir) + '/report/img/conf_mat_disj' + str(kernel_size) + '.png'
+            file_name = str(parent_dir) + '/report/img/conf_mat/conf_mat_disj' + str(kernel_size) + '.png'
             plot_confusion_matrix(cm=conf_matrix, classes=list([str(i) for i in range(10)]),
                                   fname=file_name, normalize=True, title=title)
             print("CONF MAT GENERATED: ", title)
@@ -121,7 +121,7 @@ if __name__ == '__main__':
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             title = 'Confusion Matrix with Overlapping Kernel Size = ' + str(kernel_size)
-            file_name = str(parent_dir) + '/report/img/conf_mat_ovlp' + str(kernel_size) + '.png'
+            file_name = str(parent_dir) + '/report/img/conf_mat/conf_mat_ovlp' + str(kernel_size) + '.png'
             plot_confusion_matrix(cm=conf_matrix, classes=list([str(i) for i in range(10)]),
                                   fname=file_name, normalize=True, title=title)
             print("CONF MAT GENERATED: ", title)

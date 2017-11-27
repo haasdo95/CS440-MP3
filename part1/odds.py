@@ -37,7 +37,7 @@ if __name__ == '__main__':
     parent_dir = os.path.dirname(os.path.dirname(__file__))
     pairs = [(0, 9), (1, 8), (2, 5), (3, 4)]
     for i, j in pairs:
-        file_name = str(parent_dir) + '/report/img/heatmap (' + str(i) + ',' + str(j) + ').png'
+        file_name = str(parent_dir) + '/report/img/heatmap/heatmap (' + str(i) + ',' + str(j) + ').png'
         i_mat = get_prob_matrix_of(i)
         j_mat = get_prob_matrix_of(j)
         i_j_mat = get_odds_between(i, j)

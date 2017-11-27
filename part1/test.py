@@ -1,6 +1,8 @@
 from part1.deserializer import read_labeled_data_files
-import pickle
+import pickle, os, warnings
 from math import log
+from pprint import pprint
+from visualization.viz import *
 
 prob = pickle.load(open("train_result.pkl", "rb"))
 print(prob)
@@ -72,14 +74,31 @@ def main():
             print("CORRECT!: ", my_result)
         else:
             print("SHOULD BE: ", truth_label, "; I GET: ", my_result)
-    for i in range(10):
-        correct_for_each[i] = correct_for_each[i] / count_each[i]
-        print("CORRECTNESS FOR ", i, ": ", correct_for_each[i])
+    # for i in range(10):
+    #     correct_for_each[i] = correct_for_each[i] / count_each[i]
+    #     print("CORRECTNESS FOR ", i, ": ", correct_for_each[i])
     for row in confusion_matrix:
-        print(row)
-    print("RATE OF CORRECTNESS: ", right_count / len(test_data))
+         print(row)
+    parent_dir = os.path.dirname(os.path.dirname(__file__))
+    # know open issue when using savefig()
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        title = 'Confusion Matrix with Disjoint Kernel Size = (1,1) and Ternary Features'
+        file_name = str(parent_dir) + '/report/img/ternary.png'
+        plot_confusion_matrix(cm=confusion_matrix, classes=list([str(i) for i in range(10)]),
+                              fname=file_name, normalize=True, title=title)
+        print("CONF MAT GENERATED: ", title)
+    # print("RATE OF CORRECTNESS: ", right_count / len(test_data))
     proto = get_prototypical(test_data)
-    print(proto)
+    # customized pretty print of porto
+    proto_pp = []
+    for digit in range(len(proto)):
+        proto_pp.append(str(digit))
+        proto_pp.append('---- Highest Posterior -----' + '---' + '----- Lowest Posterior -----')
+        proto_pp.append([proto[digit]['max_chosen'][idx] + ' | ' + proto[digit]['min_chosen'][idx]
+                         for idx in range(len(proto[digit]['max_chosen']))])
+        proto_pp.append('                            ' + '   ' + '                            ')
+    pprint(proto_pp)
 
 
 if __name__ == '__main__':
