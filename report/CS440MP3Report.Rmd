@@ -1,0 +1,124 @@
+---
+title: |
+  | CS 440/ECE 448 Artificial Intelligence
+  | Assignment 3: Naive Bayes Classification
+author: Haoen CUI^[Haoen CUI's Email hcui10@illinois.edu], Guohao (Holden) DOU^[Guohao (Holden) DOU's Email gdou2@illinois.edu], Chuchao LUO^[Chuchao LUO's Email chuchao2@illinois.edu]
+date: "November 27, 2017"
+output:
+  pdf_document:
+    toc: yes
+    toc_depth: 3
+    number_sections: true
+    fig_width: 7
+    fig_height: 6
+    fig_caption: true
+    df_print: kable
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+\newpage
+
+# Part 1: Digit Classification
+
+## Single Pixels as Features (For Everybody)
+
+### Implementation
+
+We treated this problem as a special case of *pixel group as features* where the pixel groups are simply disjoint and of size 1 by 1. Please see the next section for details.  
+
+### Smoothing Constant
+
+### Classification Rate and Confusion Matrix
+
+### Posterior Probabilities: Highest and Lowest
+
+### Visualization of Likelihoods and Odds Ratios
+
+## Pixel Groups as Features (For Four-Credit Students)
+
+### Accuracy on Test Set
+
+#### Disjoint Patches
+
+##### Size 2 by 2
+
+##### Size 2 by 4
+
+##### Size 4 by 2
+
+##### Size 4 by 4
+
+#### Overlapping Patches
+
+##### Size 2 by 2
+
+##### Size 2 by 4
+
+##### Size 4 by 2
+
+##### Size 4 by 4
+
+##### Size 2 by 3
+
+##### Size 3 by 2
+
+##### Size 3 by 3
+
+### Trends for Different Feature Sets
+
+### Running Time for Different Feature Sets
+
+#### Training
+
+#### Testing
+
+## Extra Credit
+
+### Ternary Features
+
+### Naive Bayes Classifier on Face Data
+
+
+---
+
+# Part 2: Audio Classification
+
+## Binary Classification: Hebrew words of "yes" and "no" (For Everybody)
+
+### Implementation
+
+### Classification Rate and Confusion Matrix
+
+## Multi-Class Classification: Audio Digits 1-5 Spoken by Four Different Speakers (For Four-Credit Students)
+
+### Implementation
+
+### Overall Accuracy
+
+### Classification Rate and Confusion Matrix
+
+## Extra Credit
+
+### Binary Classification on Unsegmented Data
+
+### Alternative Method (RNN) on XXX Data
+
+### Average-Column Method on Hebrew Yes-No Corpus
+
+
+---
+
+# Statement of Individual Contribution
+
+```{r echo=FALSE}
+contribution_table <- 
+  rbind(c("hcui10", "visualization, report, and ideas generation"), 
+        c("gdou2", "part 1 (algorithm design and programming) and ideas generation"), 
+        c("chuchao2", "part 2 (algorithm design and programming) and ideas generation"))
+colnames(contribution_table) <- c("NetID", "Contribution")
+rownames(contribution_table) <- c("Haoen CUI", "Guohao DOU", "Chuchao LUO")
+knitr::kable(contribution_table, caption = "Statement of Individual Contribution")
+```
