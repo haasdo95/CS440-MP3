@@ -2,6 +2,9 @@
 this file creates the "odds" heatmap
 """
 
+import os
+from visualization.viz import *
+
 from part1.train import retrieve_prob
 lookup_table = retrieve_prob(is_binary=True)
 
@@ -25,9 +28,18 @@ def get_prob_matrix_of(number: int):
 
 if __name__ == '__main__':
     # example usage
-    one_mat = get_prob_matrix_of(1)
-    eight_mat = get_prob_matrix_of(8)
-    one_eight_matrix = get_odds_between(1, 8)
-    print(one_mat)
-    print(eight_mat)
-    print(one_eight_matrix)
+    # one_mat = get_prob_matrix_of(1)
+    # eight_mat = get_prob_matrix_of(8)
+    # one_eight_matrix = get_odds_between(1, 8)
+    # print(one_mat)
+    # print(eight_mat)
+    # print(one_eight_matrix)
+    parent_dir = os.path.dirname(os.path.dirname(__file__))
+    pairs = [(0, 9), (1, 8), (2, 5), (3, 4)]
+    for i, j in pairs:
+        file_name = str(parent_dir) + '/report/img/heatmap (' + str(i) + ',' + str(j) + ').png'
+        i_mat = get_prob_matrix_of(i)
+        j_mat = get_prob_matrix_of(j)
+        i_j_mat = get_odds_between(i, j)
+        plot_heat_map(i, j, i_mat, j_mat, i_j_mat, fname=file_name)
+        print("HEAT MAP GENERATED: (", i, j, ")")

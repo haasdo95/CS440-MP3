@@ -41,31 +41,22 @@ We treated this problem as a special case of *pixel group as features* where the
 
 ### Accuracy on Test Set
 
-#### Disjoint Patches
+```{r}
+sizes_to_run_disj <- c(11, 22, 24, 42, 22)
+sizes_to_run_overlap <- c(22, 24, 42, 44, 23, 32, 33)
+for (kernel.size in sizes_to_run_disj) {
+  i <- kernel.size %/% 10
+  j <- kernel.size %% 10
+  path.to.file <- paste("img/conf_mat_disj", kernel.size, ".png", sep = "")
+  print(path.to.file)
+  knitr::include_graphics(path = path.to.file)
+}
+```
 
-##### Size 2 by 2
+```{r}
+knitr::include_graphics(path = "img/conf_mat_disj11.png")
 
-##### Size 2 by 4
-
-##### Size 4 by 2
-
-##### Size 4 by 4
-
-#### Overlapping Patches
-
-##### Size 2 by 2
-
-##### Size 2 by 4
-
-##### Size 4 by 2
-
-##### Size 4 by 4
-
-##### Size 2 by 3
-
-##### Size 3 by 2
-
-##### Size 3 by 3
+```
 
 ### Trends for Different Feature Sets
 
