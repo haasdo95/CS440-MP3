@@ -14,6 +14,9 @@ no_path = './txt_yesno/no_test'
 yesFiles = os.scandir(yes_path)
 noFiles = os.scandir(no_path)
 
+import warnings
+from visualization.viz import *
+
 test = []
 for i in yesFiles:
     test.append((utils.getData(i.path,interval=0,smooth=False)[0], 'yes'))
@@ -50,3 +53,15 @@ for t in test:
 
 print("CORRECT: ", correct_count, " TOTAL: ", total_count)
 print("RATE: ", correct_count / total_count)
+
+# plot the confusion matrix
+conf_mat = [[1,0], [0,1]] # row = ground truth, row/col --> NO, YES
+# know open issue when using savefig()
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore")
+    title = 'Confusion Matrix for Hebrew Words (Y/N) Using RNN'
+    parent_dir = os.path.dirname(os.path.dirname(__file__))
+    file_name = str(parent_dir) + '/report/img/Hebrew_Words_RNN_Conf_Mat.png'
+    plot_confusion_matrix(cm=conf_mat, classes=["NO", "YES"],
+                          fname=file_name, normalize=True, title=title)
+    print("CONF MAT GENERATED: ", title)

@@ -1,0 +1,6 @@
+TOTAL TRAIN SIZE: 279
+TOTAL ACCURACY: 0.96
+{'no': {'no': 0.47, 'yes': 0.03}, 'yes': {'no': 0.01, 'yes': 0.49}}
+CONF MAT GENERATED:  Confusion Matrix for Hebrew Words (Y/N)
+
+Process finished with exit code 0

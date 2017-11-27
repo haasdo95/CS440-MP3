@@ -1,7 +1,7 @@
 import utils
 import numpy as np
-import math
-
+import math, warnings, os
+from visualization.viz import *
 
 def avg_col(datas):
     '''
@@ -80,4 +80,15 @@ if __name__ == "__main__":
     condProb = collect(train_data)
     test_data = [(i, 'yes') for i in avg_col(yes_test)] + \
         [(i, 'no') for i in avg_col(no_test)]
-    print(getAccuracy(condProb, test_data))
+    confuseMat = getAccuracy(condProb, test_data)
+    print(confuseMat)
+    conf_mat = list([[val for _, val in val_dict.items()] for _, val_dict in confuseMat.items()])
+    parent_dir = os.path.dirname(os.path.dirname(__file__))
+    # know open issue when using savefig()
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        title = 'Confusion Matrix for Hebrew Words (Y/N) Using Average Column Method'
+        file_name = str(parent_dir) + '/report/img/Hebrew_Words_Avg_Col_Conf_Mat.png'
+        plot_confusion_matrix(cm=conf_mat, classes=list([key.upper() for key in confuseMat.keys()]),
+                              fname=file_name, normalize=True, title=title)
+        print("CONF MAT GENERATED: ", title)

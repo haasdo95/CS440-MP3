@@ -169,33 +169,93 @@ This part is relatively easy. We merely changed the way we read in files to inco
 
 ### Classification Rate and Confusion Matrix
 
+We used the same logic of 10-fold cross validation to select the best smoother. The potential list we considered is `smoothers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]`. The best smoother we selected is `best_smoother = 2` and its average classificaiton rate on the 10 folds is 98.15%. With this smoother, the confusion matrix is shown below.  
+
+![Confusion Matrix for Hebrew Words (Y/N)](img/Hebrew_Words_Conf_Mat.png)
+
 ## Multi-Class Classification: Audio Digits 1-5 Spoken by Four Different Speakers (For Four-Credit Students)
 
 ### Implementation
 
-### Overall Accuracy
+### Accuracy: Classification Rate and Confusion Matrix
 
-### Classification Rate and Confusion Matrix
+Again, smoother is chosed based on cross validation described above. The final overall accuracy with the best smoother is 85 % and the confusion matrix is shown below. 
+
+![Confusion Matrix for Audio Digits](img/Audio_Digits_Conf_Mat.png)
 
 ## Extra Credit
 
 ### Binary Classification on Unsegmented Data
 
-### Alternative Method (RNN) on XXX Data
+Using the `splitData.run()` function we designed, we run the binary Naive Bayes classifier on the splitted data again. Meanwhile, smoother is selected using cross validation as described above. The overall accuracy is 96 % and the confusion matrix is shown below.  
+
+![Confusion Matrix for Hebrew Words (Y/N) with Unsegmented Data](img/Hebrew_Words_Unsegmented_Conf_Mat.png)
+
+### Alternative Method (RNN) on Hebrew Yes-No Corpus
+
+
+![Confusion Matrix for Hebrew Words (Y/N) Using RNN](img/Hebrew_Words_RNN_Conf_Mat.png)
 
 ### Average-Column Method on Hebrew Yes-No Corpus
 
+We implemented the method as described in the assignment along with smoother selection using cross validation explained above. The confusion matrix is shown below. As noted in the assignment, our result was not as good as the basline but the computational complexity (e.g. time taken) was lower.  
+
+![Confusion Matrix for Hebrew Words (Y/N) Using Average Column Method](img/Hebrew_Words_Avg_Col_Conf_Mat.png)
 
 ---
 
-# Statement of Individual Contribution
+# Appendix {-}
+
+In this appendix section, we explain what is contained in the submission package so that one can refer to the raw files in case that the report above was not clear on any points (which should not be the case). Note that "`.`" in the following table stands for the path to the submission folder, i.e. "`PATH/TO/CS440MP3`".   
+
 
 ```{r, echo = FALSE}
-contribution_table <- 
+appendix <- 
+  rbind(c("`./part1/log`"                 , "Execuion logs"), 
+        c("`./part2/log`"                 , "Execuion logs"), 
+        c("`./*/*.pkl`"                   , "Training results"), 
+        c("`./part1/cv_fc.py`"            , " "), 
+        c("`./part1/deserializer.py`"     , " "), 
+        c("`./part1/deserializer_face.py`", " "), 
+        c("`./part1/fc_utils.py`"         , " "), 
+        c("`./part1/odds.py`"             , " "), 
+        c("`./part1/ternary2binary.py`"   , " "), 
+        c("`./part1/test.py`"             , " "), 
+        c("`./part1/test_ec.py`"          , " "), 
+        c("`./part1/test_fc.py`"          , " "), 
+        c("`./part1/train.py`"            , " "), 
+        c("`./part1/train_ec.py`"         , " "), 
+        c("`./part1/train_fc.py`"         , " "), 
+        c("`./part1/disj_rec.txt`"        , " "), 
+        c("`./part1/ovlp_rec.txt`"        , " "), 
+        c("`./part2/YESNO.py`"            , " "), 
+        c("`./part2/YESNO_avg_col.py`"    , " "), 
+        c("`./part2/cv.py`"               , " "), 
+        c("`./part2/dataLoader.py`"       , " "), 
+        c("`./part2/ec2.py`"              , " "), 
+        c("`./part2/numberClassifier.py`" , " "), 
+        c("`./part2/rnn.py`"              , " "), 
+        c("`./part2/splitData.py`"        , " "), 
+        c("`./part2/tensorize.py`"        , " "), 
+        c("`./part2/test.py`"             , " "), 
+        c("`./part2/train.py`"            , " "), 
+        c("`./part2/utils.py`"            , " "), 
+        c("`./visualization/viz.py`"      , "Python code for visualizations"), 
+        c("`./report`"                    , "Reports and supporting documents to generate the report"))
+colnames(appendix) <- c("File", "Usage or Comments")
+rownames(appendix) <- c()
+knitr::kable(appendix, caption = "Annotations of Files Submitted")
+```
+
+
+# Statement of Individual Contribution {-}
+
+```{r, echo = FALSE}
+contribution.table <- 
   rbind(c("hcui10", "visualization, report, and ideas generation"), 
         c("gdou2", "part 1 (algorithm design and programming) and ideas generation"), 
         c("chuchao2", "part 2 (algorithm design and programming) and ideas generation"))
-colnames(contribution_table) <- c("NetID", "Contribution")
-rownames(contribution_table) <- c("Haoen CUI", "Guohao DOU", "Chuchao LUO")
-knitr::kable(contribution_table, caption = "Statement of Individual Contribution")
+colnames(contribution.table) <- c("NetID", "Contribution")
+rownames(contribution.table) <- c("Haoen CUI", "Guohao DOU", "Chuchao LUO")
+knitr::kable(contribution.table, caption = "Statement of Individual Contribution")
 ```
