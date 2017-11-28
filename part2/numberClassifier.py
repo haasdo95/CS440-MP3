@@ -30,6 +30,6 @@ if __name__ == '__main__':
         warnings.simplefilter("ignore")
         title = 'Confusion Matrix for Audio Digits'
         file_name = str(parent_dir) + '/report/img/Audio_Digits_Conf_Mat.png'
-        plot_confusion_matrix(cm=conf_mat, classes=["1", "2", "3", "4", "4"],
+        plot_confusion_matrix(cm=conf_mat, classes=["1", "2", "3", "4", "5"],
                               fname=file_name, normalize=True, title=title)
         print("CONF MAT GENERATED: ", title)

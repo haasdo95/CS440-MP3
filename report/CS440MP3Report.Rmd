@@ -260,6 +260,7 @@ We implemented the method as described in the assignment along with smoother sel
 
 ---
 
+\newpage
 # Appendix {-}
 
 In this appendix section, we explain what is contained in the submission package so that one can refer to the raw files in case that the report above was not clear on any points (which should not be the case).   
@@ -309,6 +310,7 @@ knitr::kable(appendix, caption = "Selected Annotations of Submitted Files")
 
 ---
 
+\newpage
 # Statement of Individual Contribution {-}
 
 ```{r, echo = FALSE}
