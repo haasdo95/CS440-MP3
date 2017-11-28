@@ -2,17 +2,18 @@
 title: |
   | CS 440/ECE 448 Artificial Intelligence
   | Assignment 3: Naive Bayes Classification
+  | Section R3 (3 Credit)
 author: Haoen CUI^[Haoen CUI's Email hcui10@illinois.edu], Guohao (Holden) DOU^[Guohao (Holden) DOU's Email gdou2@illinois.edu], Chuchao LUO^[Chuchao LUO's Email chuchao2@illinois.edu]
-date: "November 27, 2017"
+date: "DUE November 27, 2017"
 output:
   pdf_document:
     toc: yes
     toc_depth: 3
     number_sections: true
-    fig_width: 7
-    fig_height: 6
-    fig_caption: true
     df_print: kable
+    fig_caption: true
+    includes:  
+      in_header: preamble-latex.tex
 ---
 
 ```{r setup, include = FALSE}
@@ -40,7 +41,8 @@ for(file.name in files){
   file.con  <- file(path.to.file, open = "r")
   file.lines <- readLines(file.con)
   for(i in 1:length(file.lines)) {
-    print(file.lines[i])
+    cat(file.lines[i])
+    cat("\n")
   }
   close(file.con)
 }
@@ -64,11 +66,9 @@ for(file.name in files){
 ## Pixel Groups as Features (For Four-Credit Students)  
 ### Implementation
 
-See deserializer.py for data loading utilities.
-
-See fc_utils.py for the "featurize" function. It basically does convolution of different stride and kernel size over the 28 * 28 matrix.
-
-See train_fc.py, cv_fc.py, test_fc.py ("fc" stands for four-credit) for detailed implementation.
+* See `deserializer.py` for data loading utilities.  
+* See `fc_utils.py` for the "featurize" function. It basically does convolution of different stride and kernel size over the 28 * 28 matrix.  
+* See `train_fc.py`, `cv_fc.py`, `test_fc.py` ("fc" stands for four-credit) for detailed implementation.  
 
 ### Choice of Smoothing Constant: 10-Fold Cross Validation
 
@@ -143,13 +143,13 @@ knitr::kable(accuracy.table, caption = "Overall Accuracy on Different Kernels wi
 The following are some general trends we found,   
 
 * with same kernel size, overlapping kernels tend to perform better than disjoint kernels because overlapping ones contain more features.  
-* with the same kernel type, increase in kernel size does not necessary translate to better performance because at some point using additional features may be merely overfitting.  
+* with the same kernel type, increase in kernel size does not necessary translate to better performance because at some point using additional features may be merely over-fitting.  
 * by trying out different kernels and tuning the smoother, one can achieve a much higher performance than merely using the default 1 by 1 pixels.  
 
 
 ### Running Time for Different Feature Sets
 
-Both training & testing with disjoint features turn out to be significantly faster.
+Both training and testing with disjoint features turn out to be significantly faster than those for overlapping features. This is because when using disjoint features, feature space is smaller than the default size 28 by 28. The larger the kernel size is, the fewer the number of features will be. On the other hand, overlapping kernels significantly boost our feature space. The smaller the kernel size is, the larger the feature space will be.   
 
 ## Extra Credit
 
@@ -161,11 +161,46 @@ This part is relatively easy. We merely changed the way we read in files to inco
 
 ### Naive Bayes Classifier on Face Data
 
-Exactly the same methodology as the previous section except for a few minor changes in matrix dimension and sample size. A fixed smoother of 1 is chosen.
+Here we used exactly the same methodologies as the previous sections except for a few minor changes in matrix dimensions and sample sizes. A fixed smoother of 1 is used in this case.   
 
-See deserializer_face.py for data loading utilities.
+* See `deserializer_face.py` for data loading utilities.  
+* See `train_ec.py` and `test_ec.py` for detailed implementation.  
 
-See train_ec.py and test_ec.py for detailed implementation.
+Detailed accuracy report on testing set is shown below.  
+
+```{r, echo = FALSE, results = 'asis'}
+files <- list.files("img/conf_mat_face_data/")
+for(file.name in files){
+  path.to.file <- file.path("img/conf_mat_face_data", file.name)
+  plot.type <- substr(file.name, start = 10, stop = 13)
+  kernel.size <- substr(file.name, start = 14, stop = nchar(file.name)-4)
+  caption <- paste(ifelse(plot.type == "disj", 
+                          "Confusion Matrix for Dace Data with Disjoint Kernel Size = ", 
+                          "Confusion Matrix for Dace Data with Overlapping Kernel Size = "), 
+                   kernel.size, sep = "")
+  cat(paste("![", caption, "](",path.to.file,"){height=210px}", sep = ""), sep = "\n")
+}
+```
+
+
+```{r, echo = FALSE}
+accuracy.table.face.data <- 
+  rbind(c("Disjoint"   , "(1, 1)", "90.7 %"), 
+        c("Disjoint"   , "(2, 2)", "98.0 %"), 
+        c("Disjoint"   , "(2, 4)", "98.7 %"), 
+        c("Disjoint"   , "(4, 2)", "97.3 %"), 
+        c("Disjoint"   , "(4, 4)", "96.7 %"), 
+        c("Overlapping", "(2, 2)", "98.0 %"), 
+        c("Overlapping", "(2, 4)", "98.7 %"), 
+        c("Overlapping", "(4, 2)", "97.3 %"), 
+        c("Overlapping", "(4, 4)", "98.0 %"), 
+        c("Overlapping", "(2, 3)", "98.0 %"), 
+        c("Overlapping", "(3, 2)", "98.0 %"), 
+        c("Overlapping", "(3, 3)", "98.7 %"))
+colnames(accuracy.table.face.data) <- c("Kernel Type", "Kernel Size", "Overall Accuracy")
+rownames(accuracy.table.face.data) <- c()
+knitr::kable(accuracy.table.face.data, caption = "Overall Accuracy with Different Kernels on Face Data")
+```
 
 ---
 
@@ -175,57 +210,63 @@ See train_ec.py and test_ec.py for detailed implementation.
 
 ### Implementation
 
-See YESNO.py for detailed implementation. Smoothing is implemented in getData.
+See `YESNO.py` for detailed implementation. Smoothing is implemented in `getData()` function.  
 
 ### Classification Rate and Confusion Matrix
 
-We used the same logic of 10-fold cross validation to select the best smoother. The potential list we considered is `smoothers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]`. The best smoother we selected is `best_smoother = 2` and its average classificaiton rate on the 10 folds is 98.15%. With this smoother, the confusion matrix is shown below.  
+We used the same logic of 10-fold cross validation to select the best smoother. The potential list we considered is `smoothers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]`. The best smoother we selected is `best_smoother = 2` and its average classification rate on the 10 folds is 98.15%. With this smoother, the confusion matrix is shown below.  
 
-![Confusion Matrix for Hebrew Words (Y/N)](img/Hebrew_Words_Conf_Mat.png)
+![Confusion Matrix for Hebrew Words (Y/N)](img/Hebrew_Words_Conf_Mat.png){height=300px}
 
 ## Multi-Class Classification: Audio Digits 1-5 Spoken by Four Different Speakers (For Four-Credit Students)
 
 ### Implementation
 
-The same methodology as the previous section. See numberClassifier.py for detailed implementation.
+The same methodology as the previous sections. See `numberClassifier.py` for detailed implementation.  
 
 ### Accuracy: Classification Rate and Confusion Matrix
 
 Again, smoother is chosen based on cross validation described above. The final overall accuracy with the best smoother is 85 % and the confusion matrix is shown below. 
 
-![Confusion Matrix for Audio Digits](img/Audio_Digits_Conf_Mat.png)
+![Confusion Matrix for Audio Digits](img/Audio_Digits_Conf_Mat.png){height=300px}
 
 ## Extra Credit
 
 ### Binary Classification on Unsegmented Data
 
-Using the `splitData.run()` function we designed, we run the binary Naive Bayes classifier on the splitted data again. Meanwhile, smoother is selected using cross validation as described above. The overall accuracy is 96 % and the confusion matrix is shown below.  
+We designed some utilities stored in `splitData.py`. The main `split()` function   
 
-![Confusion Matrix for Hebrew Words (Y/N) with Unsegmented Data](img/Hebrew_Words_Unsegmented_Conf_Mat.png)
+* First strips garbage data at the beginning and the end of a voice data.   
+* Then iterates the rest of the data.   
+  + When the number of high energy grid is more than `startThreshold`, we start to record data.   
+  + When the number of high energy grid is less than `endThreshold`, or when the time limit is exceeded (10 columns), we stop recording data.   
+  + If the data is not long enough (less than 10 columns), use all zero column to pad two side of that data to 10 columns.  
+
+Using the functions in `splitData.py` we designed, we run the binary Naive Bayes classifier on the splitted data again. Meanwhile, smoother is selected using cross validation as described above. The overall accuracy is 96 % and the confusion matrix is shown below.  
+
+![Confusion Matrix for Hebrew Words (Y/N) with Unsegmented Data](img/Hebrew_Words_Unsegmented_Conf_Mat.png){height=300px}
 
 ### Alternative Method (RNN) on Hebrew Yes-No Corpus
 
-See train.py, test.py, rnn.py and tensorize.py for RNN implementation.
+See `train.py`, `test.py`, `rnn.py` and `tensorize.py` for RNN implementation. It simply treats every sound as a sequence of different energy through time, which is pretty much what recurrent neural nets are made for. An overall accuracy of 95% could be achieved. Confusion matrix is listed below.  
 
-It simply treats every sound as a sequence of different energy through time, which is pretty much what recurrent neural nets are made for.
-
-An overall accuracy of 95% could be achieved.
-
-See below for its confusion matrix
-
-![Confusion Matrix for Hebrew Words (Y/N) Using RNN](img/Hebrew_Words_RNN_Conf_Mat.png)
+![Confusion Matrix for Hebrew Words (Y/N) Using RNN](img/Hebrew_Words_RNN_Conf_Mat.png){height=300px}
 
 ### Average-Column Method on Hebrew Yes-No Corpus
 
-We implemented the method as described in the assignment along with smoother selection using cross validation explained above. The confusion matrix is shown below. As noted in the assignment, our result was not as good as the basline but the computational complexity (e.g. time taken) was lower.  
+We implemented the method as described in the assignment along with smoother selection using cross validation explained above. The confusion matrix is shown below. As noted in the assignment, our result was not as good as the baseline but the computational complexity (e.g. time taken) was lower.  
 
-![Confusion Matrix for Hebrew Words (Y/N) Using Average Column Method](img/Hebrew_Words_Avg_Col_Conf_Mat.png)
+![Confusion Matrix for Hebrew Words (Y/N) Using Average Column Method](img/Hebrew_Words_Avg_Col_Conf_Mat.png){height=300px}
 
 ---
 
 # Appendix {-}
 
-In this appendix section, we explain what is contained in the submission package so that one can refer to the raw files in case that the report above was not clear on any points (which should not be the case). Note that "`.`" in the following table stands for the path to the submission folder, i.e. "`PATH/TO/CS440MP3`".   
+In this appendix section, we explain what is contained in the submission package so that one can refer to the raw files in case that the report above was not clear on any points (which should not be the case).   
+*Note that*   
+
+* "`.`" in the following table stands for the path to the submission folder, i.e. "`PATH/TO/CS440MP3`".   
+* All `.pkl` pickle files are removed from the submission package due to size limit.  
 
 
 ```{r, echo = FALSE}
@@ -233,39 +274,40 @@ appendix <-
   rbind(c("`./part1/log`"                 , "Execuion logs"), 
         c("`./part2/log`"                 , "Execuion logs"), 
         c("`./*/*.pkl`"                   , "Training results"), 
-        c("`./part1/cv_fc.py`"            , " "), 
-        c("`./part1/deserializer.py`"     , " "), 
-        c("`./part1/deserializer_face.py`", " "), 
-        c("`./part1/fc_utils.py`"         , " "), 
-        c("`./part1/odds.py`"             , " "), 
-        c("`./part1/ternary2binary.py`"   , " "), 
-        c("`./part1/test.py`"             , " "), 
-        c("`./part1/test_ec.py`"          , " "), 
-        c("`./part1/test_fc.py`"          , " "), 
-        c("`./part1/train.py`"            , " "), 
-        c("`./part1/train_ec.py`"         , " "), 
-        c("`./part1/train_fc.py`"         , " "), 
-        c("`./part1/disj_rec.txt`"        , " "), 
-        c("`./part1/ovlp_rec.txt`"        , " "), 
-        c("`./part2/YESNO.py`"            , " "), 
-        c("`./part2/YESNO_avg_col.py`"    , " "), 
-        c("`./part2/cv.py`"               , " "), 
-        c("`./part2/dataLoader.py`"       , " "), 
-        c("`./part2/ec2.py`"              , " "), 
-        c("`./part2/numberClassifier.py`" , " "), 
-        c("`./part2/rnn.py`"              , " "), 
-        c("`./part2/splitData.py`"        , " "), 
-        c("`./part2/tensorize.py`"        , " "), 
-        c("`./part2/test.py`"             , " "), 
-        c("`./part2/train.py`"            , " "), 
-        c("`./part2/utils.py`"            , " "), 
+        c("`./part1/cv_fc.py`"            , "Cross validation utilies for Part 1.2 (4 credit)"), 
+        c("`./part1/deserializer.py`"     , "Data loading utilities for Part 1.2 (4 credit)"), 
+        c("`./part1/deserializer_face.py`", "Data loading utilities for Part 1.3.2 (extra credit)"), 
+        c("`./part1/fc_utils.py`"         , "Featurize (convolution) functions for Part 1.2 (4 credit)"), 
+        c("`./part1/odds.py`"             , "Utilities to compute odds ratios"), 
+        c("`./part1/ternary2binary.py`"   , "Convert data from ternary representation to binary representation"), 
+        c("`./part1/test.py`"             , "Generate testing outputs based on training results for Part 1.1 (3 credit)"), 
+        c("`./part1/test_fc.py`"          , "Generate testing outputs based on training results for Part 1.2 (4 credit)"), 
+        c("`./part1/test_ec.py`"          , "Generate testing outputs based on training results for Part 1.3 (extra credit)"), 
+        c("`./part1/train.py`"            , "Model training utilities for Part 1.1 (3 credit)"), 
+        c("`./part1/train_fc.py`"         , "Model training utilities for Part 1.2 (4 credit)"), 
+        c("`./part1/train_ec.py`"         , "Model training utilities for Part 1.3 (extra credit)"), 
+        c("`./part1/disj_rec.txt`"        , "Smoother cross validation results for disjoint kernels"), 
+        c("`./part1/ovlp_rec.txt`"        , "Smoother cross validation results for overlapping kernels"), 
+        c("`./part2/YESNO.py`"            , "Generate testing outputs for Part 2.1 (3 credit)"), 
+        c("`./part2/YESNO_avg_col.py`"    , "Generate testing outputs for Part 2.3.3 (extra credit)"), 
+        c("`./part2/cv.py`"               , "Cross validation utilies for Part 2"), 
+        c("`./part2/dataLoader.py`"       , "Data loading utilities for Part 2"), 
+        c("`./part2/ec2.py`"              , "Generate testing outputs for Part 2.3.1 (extra credit)"), 
+        c("`./part2/numberClassifier.py`" , "Generate testing outputs for Part 2.2 (4 credit)"), 
+        c("`./part2/rnn.py`"              , "RNN training and testing for Part 2.3.2 (extra credit)"), 
+        c("`./part2/splitData.py`"        , "Data splitting utilities for Part 2.3.1 (extra credit)"), 
+        c("`./part2/tensorize.py`"        , "Tensorize utilities for Part 2.3.2 (extra credit)"), 
+        c("`./part2/test.py`"             , "Generate testing outputs for Part 2.2 (4 credit)"), 
+        c("`./part2/train.py`"            , "Model training utilities for Part 2.1 (3 credit)"), 
+        c("`./part2/utils.py`"            , "General utilities for Part 2"), 
         c("`./visualization/viz.py`"      , "Python code for visualizations"), 
         c("`./report`"                    , "Reports and supporting documents to generate the report"))
 colnames(appendix) <- c("File", "Usage or Comments")
 rownames(appendix) <- c()
-knitr::kable(appendix, caption = "Annotations of Files Submitted")
+knitr::kable(appendix, caption = "Selected Annotations of Submitted Files")
 ```
 
+---
 
 # Statement of Individual Contribution {-}
 

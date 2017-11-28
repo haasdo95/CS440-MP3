@@ -91,14 +91,15 @@ def main():
     # print("RATE OF CORRECTNESS: ", right_count / len(test_data))
     proto = get_prototypical(test_data)
     # customized pretty print of porto
-    proto_pp = []
     for digit in range(len(proto)):
-        proto_pp.append(str(digit))
+        proto_pp = []
+        proto_pp.append('======================== Digit = ' + str(digit) + ' ========================')
         proto_pp.append('---- Highest Posterior -----' + '---' + '----- Lowest Posterior -----')
         proto_pp.append([proto[digit]['max_chosen'][idx] + ' | ' + proto[digit]['min_chosen'][idx]
                          for idx in range(len(proto[digit]['max_chosen']))])
-        proto_pp.append('                            ' + '   ' + '                            ')
-    pprint(proto_pp)
+        path_to_file = str(parent_dir) + '/report/img/prototypical/' + str(digit) + '.txt'
+        with open(path_to_file, 'wt') as out:
+            pprint(proto_pp, stream=out)
 
 
 if __name__ == '__main__':

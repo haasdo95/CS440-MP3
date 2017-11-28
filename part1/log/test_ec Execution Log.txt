@@ -1,50 +1,62 @@
 [0.5188470066518847, 0.4811529933481153]
 Creating Conf Matrix for:  (1, 1)   Disjoint
 DISJ PERFORMANCE ON  (1, 1) :  0.9066666666666666
+CONF MAT GENERATED:  Confusion Matrix for Face Data with Disjoint Kernel Size = (1, 1)
 0.8831	0.1169	
 0.0685	0.9315	
 Creating Conf Matrix for:  (2, 2)   Disjoint
 DISJ PERFORMANCE ON  (2, 2) :  0.98
+CONF MAT GENERATED:  Confusion Matrix for Face Data with Disjoint Kernel Size = (2, 2)
 0.961	0.039	
 0.0	1.0	
 Creating Conf Matrix for:  (2, 4)   Disjoint
 DISJ PERFORMANCE ON  (2, 4) :  0.9866666666666667
+CONF MAT GENERATED:  Confusion Matrix for Face Data with Disjoint Kernel Size = (2, 4)
 0.974	0.026	
 0.0	1.0	
 Creating Conf Matrix for:  (4, 2)   Disjoint
 DISJ PERFORMANCE ON  (4, 2) :  0.9733333333333334
+CONF MAT GENERATED:  Confusion Matrix for Face Data with Disjoint Kernel Size = (4, 2)
 0.961	0.039	
 0.0137	0.9863	
 Creating Conf Matrix for:  (4, 4)   Disjoint
 DISJ PERFORMANCE ON  (4, 4) :  0.9666666666666667
+CONF MAT GENERATED:  Confusion Matrix for Face Data with Disjoint Kernel Size = (4, 4)
 0.9481	0.0519	
 0.0137	0.9863	
 Creating Conf Matrix for:  (2, 2)   Overlap
 OVLP PERFORMANCE ON  (2, 2) :  0.98
+CONF MAT GENERATED:  Confusion Matrix for Face Data with Overlapping Kernel Size = (2, 2)
 0.961	0.039	
 0.0	1.0	
 Creating Conf Matrix for:  (2, 4)   Overlap
 OVLP PERFORMANCE ON  (2, 4) :  0.9866666666666667
+CONF MAT GENERATED:  Confusion Matrix for Face Data with Overlapping Kernel Size = (2, 4)
 0.987	0.013	
 0.0137	0.9863	
 Creating Conf Matrix for:  (4, 2)   Overlap
 OVLP PERFORMANCE ON  (4, 2) :  0.9733333333333334
+CONF MAT GENERATED:  Confusion Matrix for Face Data with Overlapping Kernel Size = (4, 2)
 0.9481	0.0519	
 0.0	1.0	
 Creating Conf Matrix for:  (4, 4)   Overlap
 OVLP PERFORMANCE ON  (4, 4) :  0.98
+CONF MAT GENERATED:  Confusion Matrix for Face Data with Overlapping Kernel Size = (4, 4)
 0.961	0.039	
 0.0	1.0	
 Creating Conf Matrix for:  (2, 3)   Overlap
 OVLP PERFORMANCE ON  (2, 3) :  0.98
+CONF MAT GENERATED:  Confusion Matrix for Face Data with Overlapping Kernel Size = (2, 3)
 0.961	0.039	
 0.0	1.0	
 Creating Conf Matrix for:  (3, 2)   Overlap
 OVLP PERFORMANCE ON  (3, 2) :  0.98
+CONF MAT GENERATED:  Confusion Matrix for Face Data with Overlapping Kernel Size = (3, 2)
 0.961	0.039	
 0.0	1.0	
 Creating Conf Matrix for:  (3, 3)   Overlap
 OVLP PERFORMANCE ON  (3, 3) :  0.9866666666666667
+CONF MAT GENERATED:  Confusion Matrix for Face Data with Overlapping Kernel Size = (3, 3)
 0.974	0.026	
 0.0	1.0	
 

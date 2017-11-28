@@ -1,7 +1,8 @@
-import pickle
+import pickle, os, warnings
 from math import log
 from part1.fc_utils import featurize
 from part1.deserializer_face import read_labeled_data_files, get_prior
+from visualization.viz import *
 
 prior = get_prior()
 
@@ -77,13 +78,30 @@ def print_confusion_matrix(conf_mat):
 if __name__ == '__main__':
     sizes_to_run_disj = [(1, 1), (2, 2), (2, 4), (4, 2), (4, 4)]
     sizes_to_run_overlap = [(2, 2), (2, 4), (4, 2), (4, 4), (2, 3), (3, 2), (3, 3)]
+    parent_dir = os.path.dirname(os.path.dirname(__file__))
     for kernel_size in sizes_to_run_disj:
         test_data = read_labeled_data_files(is_training=False, is_binary=True)
         perf, conf_matrix = measure_performance(test_data, kernel_size, True)
         print("DISJ PERFORMANCE ON ", str(kernel_size), ": ", perf)
+        # know open issue when using savefig()
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            title = 'Confusion Matrix for Face Data with Disjoint Kernel Size = ' + str(kernel_size)
+            file_name = str(parent_dir) + '/report/img/conf_mat_face_data/conf_mat_disj' + str(kernel_size) + '.png'
+            plot_confusion_matrix(cm=conf_matrix, classes=["NO", "YES"],
+                                  fname=file_name, normalize=True, title=title)
+            print("CONF MAT GENERATED: ", title)
         print_confusion_matrix(conf_matrix)
     for kernel_size in sizes_to_run_overlap:
         test_data = read_labeled_data_files(is_training=False, is_binary=True)
         perf, conf_matrix = measure_performance(test_data, kernel_size, False)
         print("OVLP PERFORMANCE ON ", str(kernel_size), ": ", perf)
+        # know open issue when using savefig()
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            title = 'Confusion Matrix for Face Data with Overlapping Kernel Size = ' + str(kernel_size)
+            file_name = str(parent_dir) + '/report/img/conf_mat_face_data/conf_mat_ovlp' + str(kernel_size) + '.png'
+            plot_confusion_matrix(cm=conf_matrix, classes=["NO", "YES"],
+                                  fname=file_name, normalize=True, title=title)
+            print("CONF MAT GENERATED: ", title)
         print_confusion_matrix(conf_matrix)
